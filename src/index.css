@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #F8F7F4;
+    color: #1A1917;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Custom subtle scrollbar for editorial elegance */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F8F7F4;
+}
+::-webkit-scrollbar-thumb {
+  background: #D8D4CC;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B6B0A4;
+}
+
+/* Studio Choros Solar Light atmospheric dynamics */
+.solar-dawn-filter {
+  filter: contrast(0.98) brightness(1.02) sepia(0.06);
+  background-color: #FAF6EE;
+}
+
+.solar-zenith-filter {
+  filter: contrast(1.01) brightness(1.02);
+  background-color: #F8F6F2;
+}
+
+.solar-dusk-filter {
+  filter: contrast(0.97) brightness(0.98) sepia(0.12) hue-rotate(-5deg);
+  background-color: #F5EFE4;
+}
+
+

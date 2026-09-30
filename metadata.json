@@ -1,0 +1,6 @@
+{
+  "name": "Atelier Choros & Mas | CMS & Studio de Diseño de Interiores",
+  "description": "Plataforma editorial y gestor de contenidos para estudios de diseño de interiores. Híbrido de alta gama inspirado en Mas Creations, Studio Choros y Alexander &CO.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

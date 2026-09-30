@@ -75,9 +75,9 @@ export const CmsStudio: React.FC<CmsStudioProps> = ({
       areaM2: 380,
       leadArchitect: 'Equipo Atelier',
       status: 'En Construcción',
-      coverImage: '/src/assets/images/project_retail_gallery_1790609033073.jpg',
+      coverImage: '/assets/images/project_retail_gallery_1790609033073.jpg',
       secondaryImages: [
-        '/src/assets/images/hero_mediterranean_living_1790608992684.jpg'
+        '/assets/images/hero_mediterranean_living_1790608992684.jpg'
       ],
       description: 'Una composición geométrica orientada al horizonte mediterráneo, priorizando la ventilación cruzada y la luz rasante matutina.',
       concept: 'Integración paisajística y eliminación de tabiquería convencional para generar diafanidad continua.',
@@ -127,7 +127,7 @@ export const CmsStudio: React.FC<CmsStudioProps> = ({
       materials: 'Bloque de travertino y difusor de alabastro natural',
       edition: 'Serie de 8 unidades numeradas',
       year: new Date().getFullYear(),
-      image: '/src/assets/images/bespoke_travertine_table_1790609047846.jpg',
+      image: '/assets/images/bespoke_travertine_table_1790609047846.jpg',
       description: 'Columna de luz escultural para rincones de lectura y salones de alta altura libre.',
       availability: 'Edición limitada',
     };
@@ -758,7 +758,7 @@ export const CmsStudio: React.FC<CmsStudioProps> = ({
                     onClick={() => {
                       setStudioConfig({ 
                         ...studioConfig, 
-                        heroBackgroundImage: '/src/assets/images/olive_mineral_texture_1790628051119.jpg' 
+                        heroBackgroundImage: '/assets/images/olive_mineral_texture_1790628051119.jpg' 
                       });
                       showNotification('Foto verde oliva activada');
                     }}

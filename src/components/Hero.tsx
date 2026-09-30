@@ -86,7 +86,7 @@ export const Hero: React.FC<HeroProps> = ({
         {/* Full-bleed Hero Background: Custom shared photo or Slideshow */}
         {studioConfig.heroBackgroundImage ? (
           <div
-            className="absolute inset-0 z-0"
+            className="absolute inset-0 z-0 bg-[#505437]"
             style={{
               transform: `translateY(${parallaxOffset}px) scale(${imageScale})`,
               transition: 'transform 100ms ease-out',
@@ -98,6 +98,15 @@ export const Hero: React.FC<HeroProps> = ({
               alt="Fondo de Autor Estudio"
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover object-center"
+              onError={(e) => {
+                const img = e.currentTarget;
+                // If it fails with /src/assets/..., fallback to /assets/...
+                if (img.src.includes('/src/assets/')) {
+                  img.src = img.src.replace('/src/assets/', '/assets/');
+                } else if (!img.src.includes('/assets/images/olive_mineral_texture_1790628051119.jpg')) {
+                  img.src = '/assets/images/olive_mineral_texture_1790628051119.jpg';
+                }
+              }}
             />
             {/* Subtle atmospheric grading */}
             <div 

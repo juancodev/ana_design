@@ -185,7 +185,7 @@ export const ChorosExperience: React.FC<ChorosExperienceProps> = ({
                 className="group relative aspect-4/3 lg:aspect-square overflow-hidden rounded-xl bg-[#EBE7DF] cursor-pointer"
               >
                 <img
-                  src="/src/assets/images/choros_sculpted_niche_1790621805963.jpg"
+                  src="/assets/images/choros_sculpted_niche_1790621805963.jpg"
                   alt="Nicho esculpido Studio Choros"
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.04]"
                 />

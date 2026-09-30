@@ -13,7 +13,7 @@ export const initialStudioConfig: StudioConfig = {
   themeAtmosphere: 'limestone',
   activeDesign: 'choros',
   heroMonogram: 'A&CO.',
-  heroBackgroundImage: '/src/assets/images/olive_mineral_texture_1790628051119.jpg',
+  heroBackgroundImage: '/assets/images/olive_mineral_texture_1790628051119.jpg',
 };
 
 export const initialProjects: Project[] = [
@@ -27,11 +27,11 @@ export const initialProjects: Project[] = [
     areaM2: 620,
     leadArchitect: 'Alexander & Associates',
     status: 'Completado',
-    coverImage: '/src/assets/images/alexander_rose_villa_1790622119278.jpg',
+    coverImage: '/assets/images/alexander_rose_villa_1790622119278.jpg',
     secondaryImages: [
-      '/src/assets/images/hero_mediterranean_living_1790608992684.jpg',
-      '/src/assets/images/choros_sanctuary_bedroom_1790621816533.jpg',
-      '/src/assets/images/choros_sculpted_niche_1790621805963.jpg'
+      '/assets/images/hero_mediterranean_living_1790608992684.jpg',
+      '/assets/images/choros_sanctuary_bedroom_1790621816533.jpg',
+      '/assets/images/choros_sculpted_niche_1790621805963.jpg'
     ],
     description: 'Inspirada en el lenguaje arquitectónico de Alexander & CO., Rose House fusiona terrazas voladas en hormigón lavado, cerramientos continuos de vidrio y solados de piedra caliza que se extienden hasta la lámina de agua de la piscina.',
     concept: 'Volumetría horizontal y conexión biofílica. La residencia abre su núcleo social hacia el jardín de palmeras y la luz atardecida mediante vigas de madera vista y carpinterías invisibles integradas en el pavimento.',
@@ -71,11 +71,11 @@ export const initialProjects: Project[] = [
     areaM2: 480,
     leadArchitect: 'Elena Vilar & Marcus Thorne',
     status: 'Completado',
-    coverImage: '/src/assets/images/hero_mediterranean_living_1790608992684.jpg',
+    coverImage: '/assets/images/hero_mediterranean_living_1790608992684.jpg',
     secondaryImages: [
-      '/src/assets/images/choros_sculpted_niche_1790621805963.jpg',
-      '/src/assets/images/choros_sanctuary_bedroom_1790621816533.jpg',
-      '/src/assets/images/bespoke_travertine_table_1790609047846.jpg'
+      '/assets/images/choros_sculpted_niche_1790621805963.jpg',
+      '/assets/images/choros_sanctuary_bedroom_1790621816533.jpg',
+      '/assets/images/bespoke_travertine_table_1790609047846.jpg'
     ],
     description: 'Una vivienda unifamiliar concebida como un refugio de contemplación. La luz natural inunda la doble altura a través de arcos esculturales, acariciando las superficies continuas de yeso a la cal y el suelo de piedra de travertino romano cepillado.',
     concept: 'Geometría serena y sombras suaves. Eliminamos cualquier artificio decorativo para que el volumen arquitectónico y la riqueza táctil de los materiales naturales hablen por sí mismos.',
@@ -115,10 +115,10 @@ export const initialProjects: Project[] = [
     areaM2: 320,
     leadArchitect: 'Marcus Thorne',
     status: 'Completado',
-    coverImage: '/src/assets/images/project_penthouse_wabisabi_1790609008496.jpg',
+    coverImage: '/assets/images/project_penthouse_wabisabi_1790609008496.jpg',
     secondaryImages: [
-      '/src/assets/images/hero_mediterranean_living_1790608992684.jpg',
-      '/src/assets/images/bespoke_travertine_table_1790609047846.jpg'
+      '/assets/images/hero_mediterranean_living_1790608992684.jpg',
+      '/assets/images/bespoke_travertine_table_1790609047846.jpg'
     ],
     description: 'Reconfiguración integral de un ático clásico para abrir una perspectiva panorámica de 360 grados. La isla monolítica de mármol acanalado estructura el eje social, secundada por paneles escamoteables de roble oscuro.',
     concept: 'Inspirado en la simplicidad compositiva de Alexander &CO: transiciones fluidas, armarios ocultos que absorben la tecnología y un equilibrio tonal sobrio y acogedor.',
@@ -158,10 +158,10 @@ export const initialProjects: Project[] = [
     areaM2: 540,
     leadArchitect: 'Elena Vilar',
     status: 'Completado',
-    coverImage: '/src/assets/images/project_hospitality_arches_1790609020862.jpg',
+    coverImage: '/assets/images/project_hospitality_arches_1790609020862.jpg',
     secondaryImages: [
-      '/src/assets/images/project_retail_gallery_1790609033073.jpg',
-      '/src/assets/images/hero_mediterranean_living_1790608992684.jpg'
+      '/assets/images/project_retail_gallery_1790609033073.jpg',
+      '/assets/images/hero_mediterranean_living_1790608992684.jpg'
     ],
     description: 'Un espacio gastronómico donde la arquitectura envuelve al comensal mediante bóvedas curvas de arcilla refractaria y una barra continua tallada en caliza viva. La acústica ha sido modelada meticulosamente con paneles de lana bajo la bóveda.',
     concept: 'Estructura rítmica y volumetría inspirada en Mas Creations: arcos secuenciales que conducen la mirada y crean nichos de intimidad en un local de alta capacidad.',
@@ -201,10 +201,10 @@ export const initialProjects: Project[] = [
     areaM2: 290,
     leadArchitect: 'Elena Vilar & Marcus Thorne',
     status: 'Completado',
-    coverImage: '/src/assets/images/project_retail_gallery_1790609033073.jpg',
+    coverImage: '/assets/images/project_retail_gallery_1790609033073.jpg',
     secondaryImages: [
-      '/src/assets/images/bespoke_travertine_table_1790609047846.jpg',
-      '/src/assets/images/hero_mediterranean_living_1790608992684.jpg'
+      '/assets/images/bespoke_travertine_table_1790609047846.jpg',
+      '/assets/images/hero_mediterranean_living_1790608992684.jpg'
     ],
     description: 'Transformación de una antigua fundición en una galería de arte funcional y tienda conceptual. Los pedestales de travertino en bruto contrastan con el hormigón pulido y una iluminación museográfica regulable.',
     concept: 'Fusión de la sencillez expositiva con geometrías arquitectónicas rotundas. Cada pieza expuesta cuenta con su propio cono de sombra y luz teatral.',
@@ -238,7 +238,7 @@ export const initialBespokeObjects: BespokeObject[] = [
     materials: 'Travertino Romano macizo tallado en bloque',
     edition: 'Edición limitada de 12 ejemplares numerados',
     year: 2025,
-    image: '/src/assets/images/bespoke_travertine_table_1790609047846.jpg',
+    image: '/assets/images/bespoke_travertine_table_1790609047846.jpg',
     description: 'Una pieza escultórica concebida como el centro de gravedad del salón. Cada mesa se esculpe en una sola pieza de cantera, conservando las cavidades e impurezas geológicas originales.',
     availability: 'Edición limitada',
   },
@@ -250,7 +250,7 @@ export const initialBespokeObjects: BespokeObject[] = [
     materials: 'Estructura en madera de castaño, espuma de alta resiliencia y bouclé de lana virgen',
     edition: 'Hecho a mano bajo encargo en taller artesanal',
     year: 2024,
-    image: '/src/assets/images/hero_mediterranean_living_1790608992684.jpg',
+    image: '/assets/images/hero_mediterranean_living_1790608992684.jpg',
     description: 'Silueta orgánica inspirada en las dunas costeras mediterráneas. Su radio de curvatura permite sentarse en múltiples posiciones de relajación.',
     availability: 'Disponible bajo pedido',
   }

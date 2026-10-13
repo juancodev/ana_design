@@ -160,7 +160,7 @@ export const Hero: React.FC<HeroProps> = ({
             willChange: 'transform, opacity',
           }}
         >
-          <DeAndradeHeroBrand color="#D4C19C" emblemSize={96} />
+          <DeAndradeHeroBrand color="#D4C19C" emblemSize={150} wordmarkSize="md" />
         </div>
 
         {/* Bottom Bar: Clean centered "Explorar" scroll indicator */}

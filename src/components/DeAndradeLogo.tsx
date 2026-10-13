@@ -206,20 +206,26 @@ export const DeAndradeHeroBrand: React.FC<{
   className?: string;
   color?: string;
   emblemSize?: number;
+  wordmarkSize?: 'sm' | 'md' | 'lg' | 'xl';
 }> = ({
   className = '',
   color = '#D4C19C',
-  emblemSize = 88,
+  emblemSize = 150,
+  wordmarkSize = 'md',
 }) => {
   return (
     <div className={`flex flex-col items-center justify-center text-center ${className}`}>
-      {/* 1. TOP: LOGO-ANA WEB-03 (Quatrefoil emblem) */}
-      <div className="mb-4 sm:mb-6 drop-shadow-[0_3px_20px_rgba(0,0,0,0.4)]">
-        <DeAndradeEmblem size={emblemSize} color={color} />
+      {/* 1. TOP: LOGO-ANA WEB-03 (Quatrefoil emblem) - Equilibrado y más grande que el texto */}
+      <div className="mb-3 sm:mb-4 drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)]">
+        <DeAndradeEmblem 
+          size={emblemSize} 
+          className="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 max-w-[65vw] max-h-[28vh]" 
+          color={color} 
+        />
       </div>
 
       {/* 2. BOTTOM: LOGO-ANA WEB-02 (De Andrade / INTERIOR DESIGN) */}
-      <DeAndradeWordmark size="lg" color={color} subtitleColor={color} />
+      <DeAndradeWordmark size={wordmarkSize} color={color} subtitleColor={color} />
     </div>
   );
 };

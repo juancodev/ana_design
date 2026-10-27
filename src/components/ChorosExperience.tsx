@@ -1,73 +1,31 @@
 import React, { useState } from 'react';
-import { 
-  Compass, 
-  Sun, 
-  Moon, 
-  Sunrise, 
-  ArrowUpRight, 
-  SlidersHorizontal, 
-  Layers, 
-  Sparkles, 
-  Maximize2, 
-  Eye, 
-  CheckCircle2, 
-  ChevronRight 
-} from 'lucide-react';
-import { Project, BespokeObject, StudioConfig, MaterialSwatch } from '../types';
+import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { BespokeObject, StudioConfig, MaterialSwatch, LightTime } from '../types';
+import { SpaceGallery } from './SpaceGallery';
+import { LightStudyBar } from './LightStudyBar';
+import { aptSanLuisSpaces } from '../data/aptSanLuis';
+import { restauranteHotelSpaces } from '../data/restauranteHotel';
 
 interface ChorosExperienceProps {
   studioConfig: StudioConfig;
-  projects: Project[];
   objects: BespokeObject[];
-  onSelectProject: (project: Project) => void;
   onInquireObject: (objectName: string) => void;
-  onConsultProject: (projectTitle: string) => void;
 }
-
-type SolarTime = 'dawn' | 'zenith' | 'dusk';
 
 export const ChorosExperience: React.FC<ChorosExperienceProps> = ({
   studioConfig,
-  projects,
   objects,
-  onSelectProject,
   onInquireObject,
-  onConsultProject,
 }) => {
-  const [solarTime, setSolarTime] = useState<SolarTime>('zenith');
+  // Each project keeps its own light selection
+  const [aptLight, setAptLight] = useState<LightTime>('zenith');
+  const [restaurantLight, setRestaurantLight] = useState<LightTime>('zenith');
   const [selectedMaterial, setSelectedMaterial] = useState<MaterialSwatch | null>(null);
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
   const [inquiryType, setInquiryType] = useState<string>('Residencia Privada');
 
-  // Filter effect based on time of day
-  const getSolarAtmosphereClass = () => {
-    switch (solarTime) {
-      case 'dawn':
-        return 'solar-dawn-filter';
-      case 'dusk':
-        return 'solar-dusk-filter';
-      case 'zenith':
-      default:
-        return 'solar-zenith-filter';
-    }
-  };
-
-  const getSolarDescription = () => {
-    switch (solarTime) {
-      case 'dawn':
-        return '08:15 — Luz rasante ambarina. Las sombras alargadas revelan el relieve del yeso a la cal.';
-      case 'dusk':
-        return '20:10 — Calidez crepuscular. La piedra de travertino absorbe los últimos rayos dorados.';
-      case 'zenith':
-      default:
-        return '13:30 — Luz cenital pura mediterránea. Claridad absoluta y volúmenes monolíticos.';
-    }
-  };
-
-  const featuredProject = projects[0];
-
   return (
-    <div className={`transition-all duration-700 ${getSolarAtmosphereClass()}`}>
+    <div className="bg-[#F8F6F2]">
       
       {/* 1. CHOROS POETIC HERO (Passe-partout Matte Frame Layout) */}
       <section className="relative pt-8 pb-20 md:pt-14 md:pb-28 px-4 sm:px-8 max-w-7xl mx-auto">
@@ -82,8 +40,7 @@ export const ChorosExperience: React.FC<ChorosExperienceProps> = ({
               <span>37°58′N 23°43′E</span>
             </div>
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-[#1F1D1A] font-normal leading-[1.08] tracking-tight">
-              Santuarios de luz, <br />
-              <span className="italic font-light text-[#736B5E]">materia y silencio.</span>
+              Apt. San Luis
             </h1>
           </div>
 
@@ -99,121 +56,11 @@ export const ChorosExperience: React.FC<ChorosExperienceProps> = ({
           </div>
         </div>
 
-        {/* Studio Choros Solar Light & Shadow Interactive Bar */}
-        <div className="mb-8 p-3.5 bg-[#F3EFE7] border border-[#E4DFD5] rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3 text-xs tracking-wider uppercase text-[#544D42]">
-            <Compass className="w-4 h-4 text-[#8A7149]" />
-            <span className="font-medium">Estudio de Luz Solar Mediterránea:</span>
-            <span className="text-[#7C7569] font-normal hidden lg:inline">{getSolarDescription()}</span>
-          </div>
+        {/* Light study: switches the renders between morning, afternoon and night */}
+        <LightStudyBar lightTime={aptLight} onChange={setAptLight} />
 
-          <div className="flex items-center bg-[#EAE5DA] p-1 rounded-lg border border-[#DCD6C9]">
-            <button
-              onClick={() => setSolarTime('dawn')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer ${
-                solarTime === 'dawn'
-                  ? 'bg-white text-[#2B2721] shadow-sm'
-                  : 'text-[#6C655A] hover:text-[#2B2721]'
-              }`}
-            >
-              <Sunrise className="w-3.5 h-3.5 text-[#B87A3E]" />
-              <span>Alba (08:00)</span>
-            </button>
-            <button
-              onClick={() => setSolarTime('zenith')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer ${
-                solarTime === 'zenith'
-                  ? 'bg-white text-[#2B2721] shadow-sm'
-                  : 'text-[#6C655A] hover:text-[#2B2721]'
-              }`}
-            >
-              <Sun className="w-3.5 h-3.5 text-[#D19B3E]" />
-              <span>Cenit (13:30)</span>
-            </button>
-            <button
-              onClick={() => setSolarTime('dusk')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer ${
-                solarTime === 'dusk'
-                  ? 'bg-white text-[#2B2721] shadow-sm'
-                  : 'text-[#6C655A] hover:text-[#2B2721]'
-              }`}
-            >
-              <Moon className="w-3.5 h-3.5 text-[#885A3D]" />
-              <span>Ocaso (20:00)</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Master Framed Diptych (The Studio Choros Passe-Partout Framing) */}
-        <div className="bg-[#FAF8F5] p-3 sm:p-6 lg:p-8 rounded-2xl border border-[#E5E0D5] shadow-xs">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            
-            {/* Primary Spatial View (Hero Living Room) */}
-            <div 
-              onClick={() => onSelectProject(featuredProject)}
-              className="lg:col-span-8 group relative aspect-4/3 sm:aspect-16/10 overflow-hidden rounded-xl bg-[#EBE7DF] cursor-pointer"
-            >
-              <img
-                src={featuredProject.coverImage}
-                alt={featuredProject.title}
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-              
-              {/* Floating Monograph Caption */}
-              <div className="absolute bottom-6 left-6 right-6 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                <div>
-                  <div className="text-[10px] tracking-[0.25em] uppercase text-[#EADFC9] mb-1">
-                    Monografía Destacada · 01
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-serif">{featuredProject.title}</h2>
-                  <p className="text-xs sm:text-sm text-[#D7CEBF] max-w-lg mt-1 font-light line-clamp-1">
-                    {featuredProject.subtitle}
-                  </p>
-                </div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-xs font-medium border border-white/30 text-white shrink-0">
-                  <span>Explorar Monografía</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </div>
-              </div>
-            </div>
-
-            {/* Tactile Micro-Detail Diptych (Choros Niche Alcove) */}
-            <div className="lg:col-span-4 flex flex-col gap-6">
-              <div 
-                onClick={() => onSelectProject(featuredProject)}
-                className="group relative aspect-4/3 lg:aspect-square overflow-hidden rounded-xl bg-[#EBE7DF] cursor-pointer"
-              >
-                <img
-                  src="/assets/images/choros_sculpted_niche_1790621805963.jpg"
-                  alt="Nicho esculpido Studio Choros"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
-                <div className="absolute top-4 right-4 bg-[#1F1D1A]/80 backdrop-blur-md text-white text-[10px] tracking-[0.2em] uppercase px-2.5 py-1 rounded">
-                  Detalle Táctil
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 bg-[#F8F6F2]/95 backdrop-blur-sm p-3 rounded-lg border border-[#E8E2D7]">
-                  <div className="text-[10px] uppercase tracking-widest text-[#8A7149]">Alveolo Esculpido</div>
-                  <div className="text-xs font-serif text-[#2C2822]">Cal viva tradicional modelada a mano y cerámica pura</div>
-                </div>
-              </div>
-
-              {/* Spatial Quote Box */}
-              <div className="p-5 rounded-xl bg-[#EFECE5] border border-[#DFD9CD] flex flex-col justify-between">
-                <p className="font-serif italic text-sm text-[#463F36] leading-relaxed">
-                  «La belleza no reside en lo que se añade, sino en la serenidad que queda cuando se ha despojado todo lo innecesario.»
-                </p>
-                <div className="mt-4 pt-3 border-t border-[#D5CEC0] flex items-center justify-between text-[11px] text-[#787163] uppercase tracking-wider">
-                  <span>Atelier Choros</span>
-                  <span>Canteras de Caliza</span>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
+        {/* Apt. San Luis render gallery, organized by space */}
+        <SpaceGallery projectName="Apt. San Luis" spaces={aptSanLuisSpaces} lightTime={aptLight} />
 
       </section>
 
@@ -278,152 +125,21 @@ export const ChorosExperience: React.FC<ChorosExperienceProps> = ({
         </div>
       </section>
 
-      {/* 3. CHOROS SANCTUARIES PORTFOLIO (Full Editorial Monograph Stories) */}
-      <section id="proyectos" className="py-24 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-[#E6E1D7] gap-4">
-          <div>
-            <span className="text-[11px] uppercase tracking-[0.3em] text-[#8A7149] font-medium block mb-2">
-              ARCHIVOS ARQUITECTÓNICOS
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-serif text-[#1F1D1A]">
-              Monografías de Obras Seleccionadas
-            </h2>
+      {/* 3. RESTAURANTE & HOTEL (second project, same structure as Apt. San Luis) */}
+      <section id="proyectos" className="relative py-20 md:py-28 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="border-b border-[#E6E1D7] pb-6 mb-10">
+          <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-[#8C8477] font-medium mb-2">
+            <span className="inline-block w-2 h-2 rounded-full bg-[#8A7149]"></span>
+            <span>Proyecto 02 · Hospitality</span>
           </div>
-          <p className="text-xs uppercase tracking-[0.2em] text-[#7C7569]">
-            {projects.length} Obras Documentadas · Edición 2024–2026
-          </p>
+          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-[#1F1D1A] font-normal leading-[1.08] tracking-tight">
+            Restaurante & Hotel
+          </h2>
         </div>
 
-        <div className="space-y-28">
-          {projects.map((project, idx) => (
-            <article 
-              key={project.id}
-              className="bg-[#FAF8F5] border border-[#E5E0D5] rounded-2xl p-6 sm:p-10 transition-all hover:shadow-md"
-            >
-              {/* Project Monograph Header */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-8 pb-8 border-b border-[#EBE6DC]">
-                <div className="lg:col-span-7">
-                  <div className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-[#8A7149] mb-3">
-                    <span className="font-serif italic font-bold">0{idx + 1}</span>
-                    <span>/</span>
-                    <span>{project.category}</span>
-                    <span>·</span>
-                    <span>{project.location}</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-4xl font-serif text-[#1F1D1A] mb-3">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-[#686053] font-light leading-relaxed">
-                    {project.subtitle}
-                  </p>
-                </div>
+        <LightStudyBar lightTime={restaurantLight} onChange={setRestaurantLight} />
 
-                <div className="lg:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
-                  <div className="p-3 bg-[#F2EEE6] rounded-lg border border-[#E2DDCF]">
-                    <span className="block text-[10px] uppercase tracking-wider text-[#8A8275]">Superficie</span>
-                    <span className="font-medium text-[#2A2621] mt-0.5 block">{project.areaM2} m²</span>
-                  </div>
-                  <div className="p-3 bg-[#F2EEE6] rounded-lg border border-[#E2DDCF]">
-                    <span className="block text-[10px] uppercase tracking-wider text-[#8A8275]">Año</span>
-                    <span className="font-medium text-[#2A2621] mt-0.5 block">{project.year}</span>
-                  </div>
-                  <div className="p-3 bg-[#F2EEE6] rounded-lg border border-[#E2DDCF] col-span-2 sm:col-span-1">
-                    <span className="block text-[10px] uppercase tracking-wider text-[#8A8275]">Estado</span>
-                    <span className="font-medium text-[#2A2621] mt-0.5 block">{project.status}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Choros Project Gallery Diptych */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
-                {/* Main Large Shot */}
-                <div 
-                  onClick={() => onSelectProject(project)}
-                  className="lg:col-span-7 aspect-16/10 rounded-xl overflow-hidden bg-[#ECE8DF] group relative cursor-pointer"
-                >
-                  <img
-                    src={project.coverImage}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
-                  <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded bg-black/60 backdrop-blur-md text-white text-[11px] tracking-wider uppercase flex items-center gap-1.5">
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>Perspectiva Espacial Principal</span>
-                  </div>
-                </div>
-
-                {/* Secondary Detail Shots */}
-                <div className="lg:col-span-5 flex flex-col gap-6">
-                  {project.secondaryImages && project.secondaryImages.length > 0 ? (
-                    <div 
-                      onClick={() => onSelectProject(project)}
-                      className="aspect-16/10 rounded-xl overflow-hidden bg-[#ECE8DF] group relative cursor-pointer flex-1"
-                    >
-                      <img
-                        src={project.secondaryImages[0]}
-                        alt={`${project.title} detalle`}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded bg-black/60 backdrop-blur-md text-white text-[11px] tracking-wider uppercase">
-                        Materialidad & Luz
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {/* Project Philosophy Extract */}
-                  <div className="p-5 rounded-xl bg-[#F3EFE7] border border-[#E3DDD1] flex flex-col justify-between">
-                    <p className="text-xs sm:text-sm text-[#544D42] font-light leading-relaxed italic">
-                      «{project.concept}»
-                    </p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-[11px] text-[#8A7149] uppercase tracking-wider font-medium">
-                        Dirección: {project.leadArchitect}
-                      </span>
-                      <button
-                        onClick={() => onConsultProject(project.title)}
-                        className="text-xs text-[#2A2621] hover:text-[#8A7149] font-medium underline underline-offset-4 cursor-pointer"
-                      >
-                        Consultar proyecto similar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Project Minerals & Direct Monograph Trigger */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-6 border-t border-[#ECE7DC] gap-4">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-[11px] uppercase tracking-wider text-[#8A8275] mr-2">
-                    Paleta Mineral:
-                  </span>
-                  {project.materials.map((mat, mIdx) => (
-                    <button
-                      key={mIdx}
-                      onClick={() => setSelectedMaterial(mat)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFECE5] border border-[#DFD9CD] text-xs text-[#4F483F] hover:border-[#8A7149] transition-colors cursor-pointer"
-                    >
-                      <span 
-                        className="w-2.5 h-2.5 rounded-full border border-black/20" 
-                        style={{ backgroundColor: mat.toneHex }}
-                      />
-                      <span>{mat.name}</span>
-                    </button>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => onSelectProject(project)}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-[#1F1D1A] hover:bg-[#34302A] text-[#FAF8F5] text-xs uppercase tracking-[0.18em] font-medium rounded-lg transition-all cursor-pointer shadow-xs"
-                >
-                  <span>Monografía Completa & Planos</span>
-                  <ArrowUpRight className="w-4 h-4 text-[#C4B28E]" />
-                </button>
-              </div>
-
-            </article>
-          ))}
-        </div>
+        <SpaceGallery projectName="Restaurante & Hotel" spaces={restauranteHotelSpaces} lightTime={restaurantLight} />
       </section>
 
       {/* 4. CHOROS MATIÈRE LABORATORY (El Archivo de Texturas de Cantera) */}

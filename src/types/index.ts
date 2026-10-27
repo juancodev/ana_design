@@ -57,6 +57,29 @@ export interface StudioConfig {
   customBackgroundUrl?: string;
 }
 
+export type LightTime = 'dawn' | 'zenith' | 'dusk';
+
+export interface RenderImage {
+  src: string;
+  thumb: string;
+}
+
+export interface SpaceRender extends RenderImage {
+  alt: string;
+  orientation: 'landscape' | 'portrait';
+  // Real renders per time of day (Option B). When absent, the render is color-graded instead.
+  lightVariants?: Partial<Record<LightTime, RenderImage>>;
+}
+
+export interface ProjectSpace {
+  id: string;
+  name: string;
+  // Optional zone used to group the tabs (e.g. "Restaurante", "Hotel")
+  group?: string;
+  description: string;
+  renders: SpaceRender[];
+}
+
 export interface ClientInquiry {
   fullName: string;
   email: string;

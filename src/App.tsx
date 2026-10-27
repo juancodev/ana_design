@@ -137,15 +137,11 @@ export default function App() {
         <section className="pt-24 pb-16 sm:pt-32 sm:pb-20 lg:pt-40 lg:pb-28 px-6 sm:px-12 max-w-5xl mx-auto text-center border-b border-[#CBC4B6]/60">
           <div className="inline-flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.3em] text-[#7C7465] font-medium mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#191919]"></span>
-            <span>{studioConfig.studioName} · Architectural Practice</span>
+            <span>Ana de Andrade · Interior Design</span>
           </div>
 
-          <p className="text-2xl sm:text-4xl lg:text-[44px] font-serif font-light text-[#191919] leading-[1.2] tracking-tight text-balance max-w-4xl mx-auto mb-6">
-            &ldquo;Somos un atelier integrado de arquitectura y diseño interior especializado en proyectos de escala humana y alta precisión matérica.&rdquo;
-          </p>
-
-          <p className="text-base sm:text-xl font-serif text-[#635D52] italic font-light max-w-2xl mx-auto">
-            Creamos santuarios habitables y atemporales para clientes que valoran la serenidad y la belleza de la calma.
+          <p className="text-2xl sm:text-4xl lg:text-[44px] font-serif font-light text-[#191919] leading-[1.2] tracking-tight text-balance max-w-4xl mx-auto">
+            Diseñar espacios que abracen la vida y un corazón en cada detalle
           </p>
         </section>
 
@@ -155,11 +151,8 @@ export default function App() {
             /* DESIGN VARIANT A: PREVALENCIA STUDIO CHOROS (Sensorial, Poético & Mediterráneo) */
             <ChorosExperience
               studioConfig={studioConfig}
-              projects={projects}
               objects={objects}
-              onSelectProject={setSelectedProject}
               onInquireObject={handleInquireObject}
-              onConsultProject={handleConsultProject}
             />
           ) : (
             /* DESIGN VARIANT B: ATELIER HÍBRIDO (Estructura Mas Creations + Alexander &CO) */

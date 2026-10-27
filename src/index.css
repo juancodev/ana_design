@@ -33,20 +33,12 @@
   background: #B6B0A4;
 }
 
-/* Studio Choros Solar Light atmospheric dynamics */
-.solar-dawn-filter {
-  filter: contrast(0.98) brightness(1.02) sepia(0.06);
-  background-color: #FAF6EE;
+/* Soft fade when a gallery render changes */
+@keyframes render-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-
-.solar-zenith-filter {
-  filter: contrast(1.01) brightness(1.02);
-  background-color: #F8F6F2;
+.render-fade-in {
+  animation: render-fade-in 500ms ease both;
 }
-
-.solar-dusk-filter {
-  filter: contrast(0.97) brightness(0.98) sepia(0.12) hue-rotate(-5deg);
-  background-color: #F5EFE4;
-}
-
 

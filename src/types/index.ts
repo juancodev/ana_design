@@ -1,62 +1,3 @@
-export type ProjectCategory = 'Residencial' | 'Hospitality' | 'Retail' | 'Colección';
-
-export interface MaterialSwatch {
-  name: string;
-  type: string;
-  origin: string;
-  toneHex: string;
-  description: string;
-}
-
-export interface Project {
-  id: string;
-  title: string;
-  subtitle: string;
-  category: ProjectCategory;
-  year: number;
-  location: string;
-  areaM2: number;
-  leadArchitect: string;
-  status: 'Completado' | 'En Construcción' | 'Concepto';
-  coverImage: string;
-  secondaryImages: string[];
-  description: string;
-  concept: string;
-  materials: MaterialSwatch[];
-  featured: boolean;
-  order: number;
-}
-
-export interface BespokeObject {
-  id: string;
-  name: string;
-  category: string;
-  dimensions: string;
-  materials: string;
-  edition: string;
-  year: number;
-  image: string;
-  description: string;
-  availability: 'Disponible bajo pedido' | 'Edición limitada' | 'Pieza única';
-}
-
-export interface StudioConfig {
-  studioName: string;
-  tagline: string;
-  heroHeadline: string;
-  heroSubheadline: string;
-  philosophyStatement: string;
-  location: string;
-  email: string;
-  phone: string;
-  instagram: string;
-  themeAtmosphere: 'limestone' | 'noir' | 'travertine' | 'olive';
-  activeDesign?: 'choros' | 'hybrid';
-  heroMonogram?: string;
-  heroBackgroundImage?: string;
-  customBackgroundUrl?: string;
-}
-
 export type LightTime = 'dawn' | 'zenith' | 'dusk';
 
 export interface RenderImage {
@@ -81,23 +22,50 @@ export interface ProjectSpace {
 }
 
 export interface PortfolioProject {
+  id: string;
   slug: string;
   // Title in two parts: "Residencia" (sans) + "San Luis" (script)
   kind: string;
   name: string;
   location: string;
   description: string;
+  published: boolean;
   spaces: ProjectSpace[];
 }
 
-export interface ClientInquiry {
-  fullName: string;
+export interface SiteSettings {
+  studioName: string;
+  heroImage: string;
+  taglineEyebrow: string;
+  // Words wrapped in *asterisks* are shown in bold italics
+  tagline: string;
+  contactEyebrow: string;
+  contactTitle: string;
+  contactNote: string;
+  typologies: string[];
+  areas: string[];
   email: string;
-  phone: string;
-  typology: ProjectCategory;
-  approxAreaM2: string;
   location: string;
-  targetDate: string;
-  estimatedBudget: string;
-  projectVision: string;
+  instagram: string;
+  copyrightName: string;
+}
+
+export type InquiryStatus = 'nuevo' | 'leido' | 'atendido';
+
+export interface Inquiry {
+  id: string;
+  createdAt: string;
+  status: InquiryStatus;
+  typology: string;
+  name: string;
+  email: string;
+  location: string;
+  area: string;
+  message: string;
+}
+
+export interface SiteContent {
+  settings: SiteSettings;
+  projects: PortfolioProject[];
+  inquiries: Inquiry[];
 }

@@ -5,6 +5,8 @@ import { LightTime, SpaceRender } from '../types';
 import { LitRender } from './LitRender';
 
 interface RenderLightboxProps {
+  // Render in place instead of on <body> (design board frames)
+  inline?: boolean;
   renders: SpaceRender[];
   index: number;
   lightTime: LightTime;
@@ -16,11 +18,12 @@ interface RenderLightboxProps {
 const pad = (n: number) => String(n).padStart(2, '0');
 
 // Full-screen viewer, portaled to <body> so no ancestor style can turn `fixed` into a local containing block
-export const RenderLightbox: React.FC<RenderLightboxProps> = ({ renders, index, lightTime, caption, onStep, onClose }) => {
+export const RenderLightbox: React.FC<RenderLightboxProps> = ({ inline = false, renders, index, lightTime, caption, onStep, onClose }) => {
   const render = renders[index];
   const hasMultiple = renders.length > 1;
 
   useEffect(() => {
+    if (inline) return;
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight') onStep(1);
@@ -32,9 +35,9 @@ export const RenderLightbox: React.FC<RenderLightboxProps> = ({ renders, index, 
       window.removeEventListener('keydown', handleKey);
       document.body.style.overflow = '';
     };
-  }, [onClose, onStep]);
+  }, [inline, onClose, onStep]);
 
-  return createPortal(
+  const viewer = (
     <div
       className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-10"
       onClick={onClose}
@@ -83,7 +86,8 @@ export const RenderLightbox: React.FC<RenderLightboxProps> = ({ renders, index, 
       <div className="absolute bottom-5 left-0 right-0 text-center text-white/80 text-xs tracking-[0.2em] uppercase">
         {caption} · {pad(index + 1)} / {pad(renders.length)}
       </div>
-    </div>,
-    document.body
+    </div>
   );
+
+  return inline ? viewer : createPortal(viewer, document.body);
 };

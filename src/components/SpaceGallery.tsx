@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ImageOff, Maximize2 } from 'lucide-react';
 import { LightTime, ProjectSpace } from '../types';
 import { LitRender } from './LitRender';
 import { RenderLightbox } from './RenderLightbox';
@@ -26,9 +26,9 @@ export const SpaceGallery: React.FC<SpaceGalleryProps> = ({ projectName, spaces,
   const [renderIndex, setRenderIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const space = spaces[spaceIndex];
-  const render = space.renders[renderIndex];
-  const hasMultipleRenders = space.renders.length > 1;
+  const space = spaces[Math.min(spaceIndex, spaces.length - 1)];
+  const render = space?.renders[Math.min(renderIndex, space.renders.length - 1)];
+  const hasMultipleRenders = (space?.renders.length ?? 0) > 1;
   const tabGroups = groupSpaces(spaces);
 
   const selectSpace = (index: number) => {
@@ -39,9 +39,18 @@ export const SpaceGallery: React.FC<SpaceGalleryProps> = ({ projectName, spaces,
   const stepRender = useCallback(
     (direction: 1 | -1) =>
       setRenderIndex((prev) => (prev + direction + space.renders.length) % space.renders.length),
-    [space.renders.length]
+    [space?.renders.length]
   );
   const closeLightbox = useCallback(() => setLightboxOpen(false), []);
+
+  if (!space || !render) {
+    return (
+      <div className="aspect-16/10 rounded-xl bg-olive-light/50 border border-dashed border-olive/40 flex flex-col items-center justify-center gap-2 text-sm">
+        <ImageOff className="w-6 h-6" />
+        Este proyecto todavía no tiene renders.
+      </div>
+    );
+  }
 
   return (
     <>

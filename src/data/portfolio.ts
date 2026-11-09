@@ -10,9 +10,12 @@ const PLACEHOLDER_DESCRIPTION =
 const jugueteria = makeRender('/assets/images/jugueteria-loop');
 const grandAltamira = makeRender('/assets/images/hotel-grand-altamira');
 
-export const portfolio: PortfolioProject[] = [
+// Initial projects; the CMS edits a copy of these kept in the browser
+export const seedProjects: PortfolioProject[] = [
   {
+    id: 'residencia-san-luis',
     slug: 'residencia-san-luis',
+    published: true,
     kind: 'Residencia',
     name: 'San Luis',
     location: 'Chacao, Caracas-Venezuela',
@@ -20,7 +23,9 @@ export const portfolio: PortfolioProject[] = [
     spaces: aptSanLuisSpaces,
   },
   {
+    id: 'restaurante-hotel-palazzo-ponti',
     slug: 'restaurante-hotel-palazzo-ponti',
+    published: true,
     kind: 'Restaurante & Hotel',
     name: 'Palazzo Ponti',
     location: 'Las Mercedes, Caracas-Venezuela',
@@ -28,7 +33,9 @@ export const portfolio: PortfolioProject[] = [
     spaces: restauranteHotelSpaces,
   },
   {
+    id: 'jugueteria-loop-paper-toys',
     slug: 'jugueteria-loop-paper-toys',
+    published: true,
     kind: 'Juguetería',
     name: 'Loop Paper Toys',
     location: 'Los Palos Grandes, Caracas-Venezuela',
@@ -46,7 +53,9 @@ export const portfolio: PortfolioProject[] = [
     ],
   },
   {
+    id: 'hotel-grand-altamira',
     slug: 'hotel-grand-altamira',
+    published: true,
     kind: 'Hotel',
     name: 'Grand Altamira',
     location: 'Altamira, Caracas-Venezuela',
@@ -64,5 +73,3 @@ export const portfolio: PortfolioProject[] = [
     ],
   },
 ];
-
-export const findProject = (slug: string) => portfolio.find((p) => p.slug === slug);

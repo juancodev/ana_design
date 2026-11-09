@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ImageOff, Maximize2 } from 'lucide-react';
 import { LightTime, PortfolioProject } from '../types';
 import { Link } from '../lib/router';
 import { LitRender } from './LitRender';
@@ -8,16 +8,25 @@ import { RenderLightbox } from './RenderLightbox';
 
 interface ProjectFeatureProps {
   project: PortfolioProject;
+  // Starting state, used by the design board to show each variant
+  initialLightTime?: LightTime;
+  initialLightboxOpen?: boolean;
+  inlineLightbox?: boolean;
 }
 
 // One project on the home page: heading, a single carousel over all its renders and a link to its page
-export const ProjectFeature: React.FC<ProjectFeatureProps> = ({ project }) => {
-  const [lightTime, setLightTime] = useState<LightTime>('zenith');
+export const ProjectFeature: React.FC<ProjectFeatureProps> = ({
+  project,
+  initialLightTime = 'zenith',
+  initialLightboxOpen = false,
+  inlineLightbox = false,
+}) => {
+  const [lightTime, setLightTime] = useState<LightTime>(initialLightTime);
   const [index, setIndex] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(initialLightboxOpen);
 
   const renders = project.spaces.flatMap((s) => s.renders);
-  const render = renders[index];
+  const render = renders[Math.min(index, renders.length - 1)];
   const hasMultiple = renders.length > 1;
   const projectPath = `/proyectos/${project.slug}`;
 
@@ -31,6 +40,12 @@ export const ProjectFeature: React.FC<ProjectFeatureProps> = ({ project }) => {
     <section id={project.slug} className="scroll-mt-16 md:scroll-mt-20 py-16 px-4 sm:px-8 max-w-[80rem] mx-auto">
       <ProjectHeading project={project} lightTime={lightTime} onLightChange={setLightTime} />
 
+      {!render ? (
+        <div className="aspect-4/3 sm:aspect-16/10 rounded-xl bg-olive-light/50 border border-dashed border-olive/40 flex flex-col items-center justify-center gap-2 text-sm">
+          <ImageOff className="w-6 h-6" />
+          Este proyecto todavía no tiene renders.
+        </div>
+      ) : (
       <div className="group relative aspect-4/3 sm:aspect-16/10 overflow-hidden rounded-xl bg-olive-light">
         <LitRender
           key={render.src}
@@ -68,6 +83,7 @@ export const ProjectFeature: React.FC<ProjectFeatureProps> = ({ project }) => {
           </>
         )}
       </div>
+      )}
 
       <div className="flex justify-center mt-5">
         <Link
@@ -78,10 +94,11 @@ export const ProjectFeature: React.FC<ProjectFeatureProps> = ({ project }) => {
         </Link>
       </div>
 
-      {lightboxOpen && (
+      {lightboxOpen && render && (
         <RenderLightbox
+          inline={inlineLightbox}
           renders={renders}
-          index={index}
+          index={renders.indexOf(render)}
           lightTime={lightTime}
           caption={`${project.kind} ${project.name}`}
           onStep={step}

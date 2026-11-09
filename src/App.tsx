@@ -3,44 +3,65 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { ProjectShowcase } from './components/ProjectShowcase';
-import { ProjectModal } from './components/ProjectModal';
-import { ObjectsCollection } from './components/ObjectsCollection';
-import { PhilosophyMaterials } from './components/PhilosophyMaterials';
-import { ProjectInquiry } from './components/ProjectInquiry';
+import { SiteMenu } from './components/SiteMenu';
+import { ProjectFeature } from './components/ProjectFeature';
+import { ProjectPage } from './components/ProjectPage';
+import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { CmsStudio } from './components/CmsStudio';
 import { ClientPitchModal } from './components/ClientPitchModal';
-import { ChorosExperience } from './components/ChorosExperience';
 import {
   initialStudioConfig,
   initialProjects,
   initialBespokeObjects,
 } from './data/initialData';
+import { findProject, portfolio } from './data/portfolio';
+import { navigate, usePath } from './lib/router';
 import { Project, BespokeObject, StudioConfig } from './types';
 
+// Private entry points (not linked from the public site) until the backend adds real login
+const CMS_HASH = '#admin';
+const PITCH_HASH = '#propuesta';
+
 export default function App() {
+  const path = usePath();
   const [studioConfig, setStudioConfig] = useState<StudioConfig>(initialStudioConfig);
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [objects, setObjects] = useState<BespokeObject[]>(initialBespokeObjects);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [cmsOpen, setCmsOpen] = useState<boolean>(false);
   const [pitchOpen, setPitchOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [inquirySubject, setInquirySubject] = useState<string>('');
   const [scrollProgress, setScrollProgress] = useState<number>(0);
 
-  // Monitor scroll progress for the Alexander & CO. curtain effect
+  const projectSlug = path.match(/^\/proyectos\/([^/]+)\/?$/)?.[1];
+  const currentProject = projectSlug ? findProject(projectSlug) : undefined;
+
+  // Unknown project or path: go back to the home page
+  useEffect(() => {
+    if (path !== '/' && !currentProject) navigate('/');
+  }, [path, currentProject]);
+
+  // Open the CMS or the pitch dossier from their private hashes
+  useEffect(() => {
+    const syncHash = () => {
+      setCmsOpen(window.location.hash === CMS_HASH);
+      setPitchOpen(window.location.hash === PITCH_HASH);
+    };
+    syncHash();
+    window.addEventListener('hashchange', syncHash);
+    return () => window.removeEventListener('hashchange', syncHash);
+  }, []);
+
+  const clearHash = () => window.history.replaceState({}, '', window.location.pathname);
+
+  // Monitor scroll progress for the pinned hero curtain effect
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
       const vh = window.innerHeight || 800;
-      // Normalizes scroll from 0 (at the very top) to 1 (when scrolled 1 full screen)
-      const progress = Math.min(Math.max(scrollY / vh, 0), 1);
-      setScrollProgress(progress);
+      setScrollProgress(Math.min(Math.max(window.scrollY / vh, 0), 1));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -48,160 +69,66 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const activeDesign: 'choros' | 'hybrid' = studioConfig.activeDesign || 'choros';
-
-  const handleToggleDesign = (design: 'choros' | 'hybrid') => {
-    setStudioConfig((prev) => ({
-      ...prev,
-      activeDesign: design,
-    }));
-  };
-
-  // Handle consultation preselection
-  const handleConsultProject = (projectTitle: string) => {
-    setInquirySubject(`Proyecto: ${projectTitle}`);
-    const element = document.getElementById('consulta');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleInquireObject = (objectName: string) => {
-    setInquirySubject(`Pieza de Colección: ${objectName}`);
-    const element = document.getElementById('consulta');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const handleResetDefaults = () => {
     setStudioConfig(initialStudioConfig);
     setProjects(initialProjects);
     setObjects(initialBespokeObjects);
   };
 
-  const isOlive = studioConfig.themeAtmosphere === 'olive';
-
-  // Content curtain background color matching Alexander & CO. limestone palette or Olive Mineral Texture
-  const getContentBgColor = () => {
-    switch (studioConfig.themeAtmosphere) {
-      case 'olive':
-        return '#4E5537';
-      case 'travertine':
-        return '#FAF7EE';
-      case 'noir':
-        return '#F4F4F3';
-      case 'limestone':
-      default:
-        return '#DAD8D2';
-    }
-  };
+  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
 
   return (
-    <div className="relative min-h-screen font-sans bg-[#141311]">
-      
-      {/* 1. UNIFIED FLOATING HEADER (Morphs contrast and reveals centered logo as you scroll) */}
-      <Header
-        studioConfig={studioConfig}
-        onOpenCms={() => setCmsOpen(!cmsOpen)}
-        onOpenPitch={() => setPitchOpen(true)}
-        cmsOpen={cmsOpen}
-        activeDesign={activeDesign}
-        onToggleDesign={handleToggleDesign}
-        scrollProgress={scrollProgress}
-        onOpenMenu={() => setIsMenuOpen(true)}
-      />
+    <div className="relative min-h-screen font-sans bg-olive">
 
-      {/* 2. CINEMATIC PINNED ARCHITECTURAL HERO (Sticky behind content, exactly like Alexander & CO.) */}
-      <Hero
-        studioConfig={studioConfig}
-        projects={projects}
-        onSelectProject={setSelectedProject}
-        onOpenCms={() => setCmsOpen(true)}
-        onOpenPitch={() => setPitchOpen(true)}
-        onToggleDesign={handleToggleDesign}
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        scrollProgress={scrollProgress}
-      />
+      <Header onOpenMenu={() => setIsMenuOpen(true)} />
 
-      {/* 3. ARCHITECTURAL CONTENT CURTAIN (Rises smoothly over the pinned Hero on scroll down) */}
-      <div 
-        id="homeContentWrapper" 
-        className="relative z-20 shadow-[0_-30px_70px_rgba(0,0,0,0.5)] transition-colors duration-500 text-[#191919]"
-        style={{
-          backgroundColor: getContentBgColor(),
-        }}
-      >
-        {/* Alexander & CO. Iconic Practice Statement Header */}
-        <section className="pt-24 pb-16 sm:pt-32 sm:pb-20 lg:pt-40 lg:pb-28 px-6 sm:px-12 max-w-5xl mx-auto text-center border-b border-[#CBC4B6]/60">
-          <div className="inline-flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.3em] text-[#7C7465] font-medium mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#191919]"></span>
-            <span>Ana de Andrade · Interior Design</span>
+      {currentProject ? (
+        <div className="bg-cream">
+          <main>
+            <ProjectPage key={currentProject.slug} project={currentProject} />
+          </main>
+          <ContactSection />
+          <Footer studioConfig={studioConfig} />
+        </div>
+      ) : (
+        <>
+          {/* Pinned hero: the content below rises over it on scroll */}
+          <Hero studioConfig={studioConfig} projects={projects} scrollProgress={scrollProgress} />
+
+          <div id="homeContentWrapper" className="relative z-20 bg-cream shadow-[0_-30px_70px_rgba(0,0,0,0.5)]">
+            {/* Studio tagline */}
+            <section className="bg-terracotta text-cream py-24 sm:py-28 px-6 text-center">
+              <div className="inline-flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-semibold mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-cream"></span>
+                <span>Ana de Andrade · Interior Design</span>
+              </div>
+              <p className="text-2xl sm:text-[32px] font-light leading-[1.3] max-w-xl mx-auto text-balance">
+                Diseñar espacios que <strong className="font-semibold italic">abracen</strong> la vida y un{' '}
+                <strong className="font-semibold italic">corazón</strong> en cada detalle
+              </p>
+            </section>
+
+            <main className="pb-24 md:pb-64">
+              {portfolio.map((project) => (
+                <ProjectFeature key={project.slug} project={project} />
+              ))}
+            </main>
+
+            <ContactSection />
+            <Footer studioConfig={studioConfig} />
           </div>
+        </>
+      )}
 
-          <p className="text-2xl sm:text-4xl lg:text-[44px] font-serif font-light text-[#191919] leading-[1.2] tracking-tight text-balance max-w-4xl mx-auto">
-            Diseñar espacios que abracen la vida y un corazón en cada detalle
-          </p>
-        </section>
+      {isMenuOpen && <SiteMenu studioConfig={studioConfig} onClose={closeMenu} />}
 
-        {/* Dynamic Studio Experience based on Selected Architectural Design */}
-        <main className="flex-1">
-          {activeDesign === 'choros' ? (
-            /* DESIGN VARIANT A: PREVALENCIA STUDIO CHOROS (Sensorial, Poético & Mediterráneo) */
-            <ChorosExperience
-              studioConfig={studioConfig}
-              objects={objects}
-              onInquireObject={handleInquireObject}
-            />
-          ) : (
-            /* DESIGN VARIANT B: ATELIER HÍBRIDO (Estructura Mas Creations + Alexander &CO) */
-            <>
-              {/* Projects Showcase: Mas Creations Bento vs Alexander &CO. Index */}
-              <ProjectShowcase
-                projects={projects}
-                onSelectProject={setSelectedProject}
-              />
-
-              {/* Bespoke Objects & Collectible Design (Mas Creations structure) */}
-              <ObjectsCollection
-                objects={objects}
-                onInquireObject={handleInquireObject}
-              />
-
-              {/* Materiality, Light & Acoustics (Studio Choros design) */}
-              <PhilosophyMaterials
-                studioConfig={studioConfig}
-              />
-
-              {/* Project Inquiry & Space Estimator (Alexander &CO. simplicity) */}
-              <ProjectInquiry
-                studioConfig={studioConfig}
-                preselectedSubject={inquirySubject}
-              />
-            </>
-          )}
-        </main>
-
-        {/* Editorial Studio Footer */}
-        <Footer
-          studioConfig={studioConfig}
-          onOpenPitch={() => setPitchOpen(true)}
-          onOpenCms={() => setCmsOpen(true)}
-        />
-      </div>
-
-      {/* Architectural Case Study Modal */}
-      <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-        onConsultProject={handleConsultProject}
-      />
-
-      {/* Integrated Live CMS Management Studio */}
+      {/* Content manager (private: /#admin) */}
       <CmsStudio
         isOpen={cmsOpen}
-        onClose={() => setCmsOpen(false)}
+        onClose={() => {
+          setCmsOpen(false);
+          clearHash();
+        }}
         projects={projects}
         setProjects={setProjects}
         objects={objects}
@@ -211,10 +138,13 @@ export default function App() {
         onResetDefaults={handleResetDefaults}
       />
 
-      {/* Client Pitch & Strategic UI/UX Proposal Drawer */}
+      {/* Client pitch dossier (private: /#propuesta) */}
       <ClientPitchModal
         isOpen={pitchOpen}
-        onClose={() => setPitchOpen(false)}
+        onClose={() => {
+          setPitchOpen(false);
+          clearHash();
+        }}
       />
 
     </div>

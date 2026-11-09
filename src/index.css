@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
+/* De Andrade brand palette (designer proposal, Nov 2026) */
+@theme {
+  --color-olive: #5E6145;
+  --color-olive-light: #A9A77D;
+  --color-olive-muted: #999271;
+  --color-cream: #DBCAA2;
+  --color-cream-light: #EEE6D3;
+  --color-paper: #F7F5EE;
+  --color-terracotta: #7B3D2C;
+  --color-ochre: #BB6D1F;
+  --font-script: 'Alex Brush', 'Great Vibes', cursive;
+}
+
 @layer base {
   :root {
     --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #F8F7F4;
-    color: #1A1917;
+    background-color: var(--color-cream);
+    color: var(--color-olive);
   }
 
   h1, h2, h3, .font-serif {

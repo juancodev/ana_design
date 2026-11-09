@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, ArrowDown, X, ExternalLink } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import { StudioConfig, Project } from '../types';
 import { DeAndradeHeroBrand } from './DeAndradeLogo';
 import defaultOliveBg from '../assets/images/olive_mineral_texture_1790628051119.jpg';
@@ -7,24 +7,12 @@ import defaultOliveBg from '../assets/images/olive_mineral_texture_1790628051119
 interface HeroProps {
   studioConfig: StudioConfig;
   projects: Project[];
-  onSelectProject: (project: Project) => void;
-  onOpenCms: () => void;
-  onOpenPitch: () => void;
-  onToggleDesign: (design: 'choros' | 'hybrid') => void;
-  isMenuOpen: boolean;
-  setIsMenuOpen: (open: boolean) => void;
   scrollProgress: number; // 0 (at top) to 1 (content completely covers hero)
 }
 
 export const Hero: React.FC<HeroProps> = ({
   studioConfig,
   projects,
-  onSelectProject,
-  onOpenCms,
-  onOpenPitch,
-  onToggleDesign,
-  isMenuOpen,
-  setIsMenuOpen,
   scrollProgress,
 }) => {
   // Use projects or fallback list
@@ -183,165 +171,6 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
       </section>
 
-      {/* Full-Screen Minimalist Architectural Overlay Menu (Alexander & CO. Inspired) */}
-      {isMenuOpen && (
-        <div 
-          className="fixed inset-0 z-[99999] bg-[#161513]/98 backdrop-blur-xl text-white flex flex-col justify-between p-8 sm:p-14 md:p-20 transition-all duration-300"
-          role="dialog"
-          aria-modal="true"
-        >
-          {/* Top Row of Overlay Menu */}
-          <div className="flex items-center justify-between border-b border-white/10 pb-6">
-            <div className="flex items-center gap-4">
-              <span className="font-serif text-2xl tracking-wider text-white">
-                {studioConfig.studioName}
-              </span>
-              <span className="text-[11px] tracking-[0.2em] uppercase text-white/50">
-                Index & Directory
-              </span>
-            </div>
-
-            <button
-              onClick={() => setIsMenuOpen(false)}
-              className="group flex items-center gap-2 text-xs tracking-[0.25em] uppercase text-white/70 hover:text-white transition-colors cursor-pointer"
-            >
-              <span>Cerrar</span>
-              <X className="w-5 h-5 text-white/70 group-hover:text-white" />
-            </button>
-          </div>
-
-          {/* Main Navigation Links */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 py-8 sm:py-12 my-auto">
-            {/* Primary Navigation Links */}
-            <div className="md:col-span-6 flex flex-col space-y-4 sm:space-y-6">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-[#A89366] font-medium">
-                Navegación del Atelier
-              </span>
-              
-              <a
-                href="#proyectos"
-                onClick={() => setIsMenuOpen(false)}
-                className="group flex items-baseline justify-between text-3xl sm:text-4xl md:text-5xl font-serif text-white/90 hover:text-white transition-all hover:translate-x-2"
-              >
-                <span>01. Obras & Proyectos</span>
-                <span className="text-xs uppercase tracking-widest text-white/40 group-hover:text-[#D8CBB7] font-mono">
-                  {projects.length} Obras
-                </span>
-              </a>
-
-              <a
-                href="#objetos"
-                onClick={() => setIsMenuOpen(false)}
-                className="group flex items-baseline justify-between text-3xl sm:text-4xl md:text-5xl font-serif text-white/90 hover:text-white transition-all hover:translate-x-2"
-              >
-                <span>02. Objetos de Autor</span>
-                <span className="text-xs uppercase tracking-widest text-white/40 group-hover:text-[#D8CBB7] font-mono">
-                  Colección
-                </span>
-              </a>
-
-              <a
-                href="#filosofia"
-                onClick={() => setIsMenuOpen(false)}
-                className="group flex items-baseline justify-between text-3xl sm:text-4xl md:text-5xl font-serif text-white/90 hover:text-white transition-all hover:translate-x-2"
-              >
-                <span>03. Materialidad & Calma</span>
-                <span className="text-xs uppercase tracking-widest text-white/40 group-hover:text-[#D8CBB7] font-mono">
-                  Manifiesto
-                </span>
-              </a>
-
-              <a
-                href="#consulta"
-                onClick={() => setIsMenuOpen(false)}
-                className="group flex items-baseline justify-between text-3xl sm:text-4xl md:text-5xl font-serif text-white/90 hover:text-white transition-all hover:translate-x-2"
-              >
-                <span>04. Comisión de Proyecto</span>
-                <span className="text-xs uppercase tracking-widest text-white/40 group-hover:text-[#D8CBB7] font-mono">
-                  Contacto VIP
-                </span>
-              </a>
-            </div>
-
-            {/* Architectural Statement & Quick Tools */}
-            <div className="md:col-span-6 flex flex-col justify-between border-t md:border-t-0 md:border-l border-white/10 pt-8 md:pt-0 md:pl-12 space-y-8">
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-[#A89366] font-medium block mb-3">
-                  Declaración Conceptual
-                </span>
-                <p className="text-sm sm:text-base text-white/70 font-light leading-relaxed font-serif max-w-md">
-                  &ldquo;{studioConfig.philosophyStatement}&rdquo;
-                </p>
-              </div>
-
-              {/* Design Atmosphere Switcher inside menu */}
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-medium block mb-3">
-                  Cambiar Enfoque Estético
-                </span>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => {
-                      onToggleDesign('choros');
-                      setIsMenuOpen(false);
-                    }}
-                    className={`px-4 py-2 text-xs uppercase tracking-widest rounded border transition-colors cursor-pointer ${
-                      studioConfig.activeDesign === 'choros'
-                        ? 'border-white bg-white text-black font-medium'
-                        : 'border-white/20 text-white/70 hover:border-white/50'
-                    }`}
-                  >
-                    Studio Choros (Prevalencia Táctil)
-                  </button>
-                  <button
-                    onClick={() => {
-                      onToggleDesign('hybrid');
-                      setIsMenuOpen(false);
-                    }}
-                    className={`px-4 py-2 text-xs uppercase tracking-widest rounded border transition-colors cursor-pointer ${
-                      studioConfig.activeDesign === 'hybrid'
-                        ? 'border-white bg-white text-black font-medium'
-                        : 'border-white/20 text-white/70 hover:border-white/50'
-                    }`}
-                  >
-                    Híbrido Mas & Alex
-                  </button>
-                </div>
-              </div>
-
-              {/* Admin & Pitch Quick Access */}
-              <div className="flex items-center gap-4 pt-4 border-t border-white/10">
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    onOpenCms();
-                  }}
-                  className="px-4 py-2.5 bg-[#2B2925] hover:bg-[#3D3A34] text-xs uppercase tracking-widest text-[#D8CBB7] border border-[#524B3E] rounded transition-colors cursor-pointer"
-                >
-                  Abrir Gestor CMS
-                </button>
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    onOpenPitch();
-                  }}
-                  className="px-4 py-2.5 bg-transparent hover:bg-white/10 text-xs uppercase tracking-widest text-white/80 border border-white/20 rounded transition-colors cursor-pointer"
-                >
-                  Ver Propuesta UI/UX
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Footer Info inside Menu */}
-          <div className="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between text-xs text-white/50 tracking-wider">
-            <span>{studioConfig.location}</span>
-            <span>{studioConfig.email}</span>
-            <span>{studioConfig.phone}</span>
-            <span>{studioConfig.instagram}</span>
-          </div>
-        </div>
-      )}
     </>
   );
 };

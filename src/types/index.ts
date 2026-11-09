@@ -80,6 +80,16 @@ export interface ProjectSpace {
   renders: SpaceRender[];
 }
 
+export interface PortfolioProject {
+  slug: string;
+  // Title in two parts: "Residencia" (sans) + "San Luis" (script)
+  kind: string;
+  name: string;
+  location: string;
+  description: string;
+  spaces: ProjectSpace[];
+}
+
 export interface ClientInquiry {
   fullName: string;
   email: string;

@@ -3,6 +3,7 @@ import { useSite, usePublishedProjects } from '../store/SiteStore';
 import { Hero } from './Hero';
 import { Tagline } from './Tagline';
 import { ProjectFeature } from './ProjectFeature';
+import { AboutSection } from './AboutSection';
 import { ContactSection } from './ContactSection';
 import { Footer } from './Footer';
 
@@ -12,7 +13,7 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ scrollProgress, pinnedHero = true }) => {
-  const { settings } = useSite();
+  const { settings, about } = useSite();
   const projects = usePublishedProjects();
 
   return (
@@ -23,12 +24,13 @@ export const HomePage: React.FC<HomePageProps> = ({ scrollProgress, pinnedHero =
       <div id="homeContentWrapper" className="relative z-20 bg-cream shadow-[0_-30px_70px_rgba(0,0,0,0.5)]">
         <Tagline settings={settings} />
 
-        <main className="pb-24 md:pb-64">
+        <main className="pb-8 md:pb-16">
           {projects.map((project) => (
             <ProjectFeature key={project.id} project={project} />
           ))}
         </main>
 
+        <AboutSection about={about} />
         <ContactSection />
         <Footer />
       </div>

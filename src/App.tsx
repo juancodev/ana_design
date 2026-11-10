@@ -8,12 +8,13 @@ import { Header } from './components/Header';
 import { HomePage } from './components/HomePage';
 import { SiteMenu } from './components/SiteMenu';
 import { ProjectPage } from './components/ProjectPage';
+import { AboutPage } from './components/AboutPage';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { ClientPitchModal } from './components/ClientPitchModal';
 import { DesignBoard } from './components/DesignBoard';
 import { CmsApp } from './cms/CmsApp';
-import { SiteProvider, usePublishedProjects } from './store/SiteStore';
+import { SiteProvider, usePublishedProjects, useSite } from './store/SiteStore';
 import { navigate, usePath } from './lib/router';
 
 // Private entry point (not linked from the public site)
@@ -33,17 +34,19 @@ const useNoIndex = (active: boolean) => {
 
 const PublicSite: React.FC<{ path: string }> = ({ path }) => {
   const projects = usePublishedProjects();
+  const { about } = useSite();
   const [pitchOpen, setPitchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const projectSlug = path.match(/^\/proyectos\/([^/]+)\/?$/)?.[1];
   const currentProject = projectSlug ? projects.find((p) => p.slug === projectSlug) : undefined;
+  const isAbout = /^\/sobre-mi\/?$/.test(path);
 
   // Unknown project or path: go back to the home page
   useEffect(() => {
-    if (path !== '/' && !currentProject) navigate('/');
-  }, [path, currentProject]);
+    if (path !== '/' && !currentProject && !isAbout) navigate('/');
+  }, [path, currentProject, isAbout]);
 
   // Open the pitch dossier from its private hash
   useEffect(() => {
@@ -70,10 +73,10 @@ const PublicSite: React.FC<{ path: string }> = ({ path }) => {
     <div className="relative min-h-screen font-sans bg-olive">
       <Header onOpenMenu={() => setIsMenuOpen(true)} />
 
-      {currentProject ? (
+      {currentProject || isAbout ? (
         <div className="bg-cream">
           <main>
-            <ProjectPage key={currentProject.id} project={currentProject} />
+            {currentProject ? <ProjectPage key={currentProject.id} project={currentProject} /> : <AboutPage about={about} />}
           </main>
           <ContactSection />
           <Footer />

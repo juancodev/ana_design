@@ -51,6 +51,10 @@ export const SiteMenu: React.FC<SiteMenuProps> = ({ onClose }) => {
             </span>
           </Link>
         ))}
+        <Link to="/sobre-mi" onClick={onClose} className={linkClass}>
+          <span className="text-sm text-cream/50">{pad(portfolio.length + 1)}</span>
+          <span>Sobre mí</span>
+        </Link>
         <a
           href="/#consulta"
           onClick={(e) => {
@@ -60,7 +64,7 @@ export const SiteMenu: React.FC<SiteMenuProps> = ({ onClose }) => {
           }}
           className={linkClass}
         >
-          <span className="text-sm text-cream/50">{pad(portfolio.length + 1)}</span>
+          <span className="text-sm text-cream/50">{pad(portfolio.length + 2)}</span>
           <span>Comisionar proyecto</span>
         </a>
       </nav>

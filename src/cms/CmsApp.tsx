@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { CheckCircle2, ExternalLink, FolderOpen, Inbox, LayoutDashboard, LogOut, PenLine, TriangleAlert } from 'lucide-react';
+import { CheckCircle2, ExternalLink, FolderOpen, Inbox, LayoutDashboard, LogOut, PenLine, TriangleAlert, UserRound } from 'lucide-react';
 import { DeAndradeEmblem } from '../components/DeAndradeLogo';
 import { navigate, usePath } from '../lib/router';
 import { useSite } from '../store/SiteStore';
@@ -9,6 +9,7 @@ import { ProjectsView } from './ProjectsView';
 import { ProjectEditorView } from './ProjectEditorView';
 import { InquiriesView } from './InquiriesView';
 import { SettingsView } from './SettingsView';
+import { AboutView } from './AboutView';
 
 // Demo session kept for the browser tab until the backend adds real accounts
 const SESSION_KEY = 'deandrade-cms-session';
@@ -50,6 +51,7 @@ const NAV = [
   { to: '/admin', label: 'Panel', icon: LayoutDashboard, match: (p: string) => p === '/admin' },
   { to: '/admin/proyectos', label: 'Proyectos', icon: FolderOpen, match: (p: string) => p.startsWith('/admin/proyectos') },
   { to: '/admin/mensajes', label: 'Mensajes', icon: Inbox, match: (p: string) => p.startsWith('/admin/mensajes') },
+  { to: '/admin/sobre-mi', label: 'Sobre mí', icon: UserRound, match: (p: string) => p.startsWith('/admin/sobre-mi') },
   { to: '/admin/contenido', label: 'Contenido del sitio', icon: PenLine, match: (p: string) => p.startsWith('/admin/contenido') },
 ];
 
@@ -103,6 +105,7 @@ export const CmsApp: React.FC<CmsAppProps> = ({ embeddedPath, className = 'h-scr
   else if (path === '/admin/proyectos') screen = <ProjectsView />;
   else if (path === '/admin/mensajes') screen = <InquiriesView />;
   else if (path === '/admin/contenido') screen = <SettingsView />;
+  else if (path === '/admin/sobre-mi') screen = <AboutView />;
   else screen = <DashboardView />;
 
   return (

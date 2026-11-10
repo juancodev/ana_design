@@ -28,6 +28,11 @@ export const Footer: React.FC = () => {
                 </li>
               ))}
               <li>
+                <Link to="/sobre-mi" className="hover:text-white transition-colors">
+                  Sobre mí
+                </Link>
+              </li>
+              <li>
                 <a
                   href="/#consulta"
                   onClick={(e) => {

@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Inquiry, PortfolioProject, SiteContent, SiteSettings } from '../types';
+import { AboutContent, Inquiry, PortfolioProject, SiteContent, SiteSettings } from '../types';
 import { seedContent } from '../data/seed';
 
 // Content lives in the browser (localStorage) until the backend phase. Every change applies to the
@@ -7,6 +7,7 @@ import { seedContent } from '../data/seed';
 // edited, so visitors who never touch the CMS always get the latest content shipped with the site.
 const STORAGE_KEYS: Record<keyof SiteContent, string> = {
   settings: 'deandrade-settings-v1',
+  about: 'deandrade-about-v1',
   projects: 'deandrade-projects-v1',
   inquiries: 'deandrade-inquiries-v1',
 };
@@ -17,8 +18,9 @@ const readPart = <K extends keyof SiteContent>(part: K): SiteContent[K] => {
     const raw = localStorage.getItem(STORAGE_KEYS[part]);
     if (raw) {
       const value = JSON.parse(raw);
-      // Settings are merged so fields added to the seed later get their default
-      return (part === 'settings' ? { ...seedContent.settings, ...value } : value) as SiteContent[K];
+      // Objects are merged so fields added to the seed later get their default
+      if (part === 'settings' || part === 'about') return { ...seedContent[part], ...value } as SiteContent[K];
+      return value as SiteContent[K];
     }
   } catch {
     // Storage unavailable or corrupt: fall back to the seed
@@ -28,6 +30,7 @@ const readPart = <K extends keyof SiteContent>(part: K): SiteContent[K] => {
 
 const load = (): SiteContent => ({
   settings: readPart('settings'),
+  about: readPart('about'),
   projects: readPart('projects'),
   inquiries: readPart('inquiries'),
 });
@@ -36,6 +39,7 @@ interface SiteStore extends SiteContent {
   // False when the browser refused to save (e.g. storage full); changes still apply in this tab
   saved: boolean;
   setSettings: (patch: Partial<SiteSettings>) => void;
+  setAbout: (patch: Partial<AboutContent>) => void;
   setProjects: (update: (projects: PortfolioProject[]) => PortfolioProject[]) => void;
   updateProject: (id: string, update: (project: PortfolioProject) => PortfolioProject) => void;
   addInquiry: (inquiry: Omit<Inquiry, 'id' | 'createdAt' | 'status'>) => void;
@@ -77,6 +81,7 @@ export const SiteProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const setSettings = useCallback((patch: Partial<SiteSettings>) => change('settings', (s) => ({ ...s, ...patch })), [change]);
+  const setAbout = useCallback((patch: Partial<AboutContent>) => change('about', (a) => ({ ...a, ...patch })), [change]);
   const setProjects = useCallback(
     (update: (projects: PortfolioProject[]) => PortfolioProject[]) => change('projects', update),
     [change]
@@ -107,8 +112,8 @@ export const SiteProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const value = useMemo<SiteStore>(
-    () => ({ ...content, saved, setSettings, setProjects, updateProject, addInquiry, setInquiries, resetContent }),
-    [content, saved, setSettings, setProjects, updateProject, addInquiry, setInquiries, resetContent]
+    () => ({ ...content, saved, setSettings, setAbout, setProjects, updateProject, addInquiry, setInquiries, resetContent }),
+    [content, saved, setSettings, setAbout, setProjects, updateProject, addInquiry, setInquiries, resetContent]
   );
 
   return <SiteStoreContext.Provider value={value}>{children}</SiteStoreContext.Provider>;

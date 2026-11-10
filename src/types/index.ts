@@ -64,8 +64,48 @@ export interface Inquiry {
   message: string;
 }
 
+export interface AboutMilestone {
+  period: string;
+  title: string;
+  description: string;
+}
+
+export interface AboutStep {
+  title: string;
+  description: string;
+}
+
+export interface AboutTool {
+  name: string;
+  category: string;
+}
+
+// The designer's introduction on the home page and her "Sobre mí" page
+export interface AboutContent {
+  firstName: string;
+  lastName: string;
+  role: string;
+  // Script word that crosses the portrait
+  scriptWord: string;
+  introLead: string;
+  introBody: string;
+  sideText: string;
+  buttonLabel: string;
+  // Cut-out portrait (transparent PNG works best); empty shows a silhouette
+  photo: string;
+  // Paragraphs separated by a blank line
+  story: string;
+  pagePhotos: string[];
+  milestones: AboutMilestone[];
+  process: AboutStep[];
+  tools: AboutTool[];
+  ctaTitle: string;
+  ctaText: string;
+}
+
 export interface SiteContent {
   settings: SiteSettings;
+  about: AboutContent;
   projects: PortfolioProject[];
   inquiries: Inquiry[];
 }

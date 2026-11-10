@@ -6,6 +6,8 @@ import { HomePage } from './HomePage';
 import { ProjectFeature } from './ProjectFeature';
 import { ProjectPage } from './ProjectPage';
 import { ContactSection } from './ContactSection';
+import { AboutSection } from './AboutSection';
+import { AboutPage } from './AboutPage';
 import { Footer } from './Footer';
 import { SiteMenu } from './SiteMenu';
 
@@ -41,7 +43,7 @@ const Frame: React.FC<FrameProps> = ({ id, number, title, note, height, children
 
 // Every screen of the site and the CMS on one page, for importing into Figma with html.to.design
 export const DesignBoard: React.FC = () => {
-  const { projects } = useSite();
+  const { projects, about } = useSite();
   const published = projects.filter((p) => p.published);
   const restaurant = published.find((p) => p.spaces.some((s) => s.renders.some((r) => r.lightVariants))) ?? published[0];
   const firstProject = published[0];
@@ -105,6 +107,24 @@ export const DesignBoard: React.FC = () => {
       ),
     })),
     {
+      id: 'sobre-ana',
+      title: 'Sobre Ana · Portada',
+      note: 'Presentación entre el último proyecto y el formulario.',
+      children: <AboutSection about={about} />,
+    },
+    {
+      id: 'pagina-sobre-mi',
+      title: 'Página · Sobre mí',
+      note: '/sobre-mi — historia, trayectoria, proceso y herramientas.',
+      children: (
+        <>
+          <Header onOpenMenu={noop} />
+          <AboutPage about={about} manageTitle={false} />
+          <Footer />
+        </>
+      ),
+    },
+    {
       id: 'formulario-error',
       title: 'Formulario · Con errores',
       note: 'Al enviar sin nombre ni correo.',
@@ -133,6 +153,7 @@ export const DesignBoard: React.FC = () => {
         ]
       : []),
     { id: 'cms-mensajes', title: 'CMS · Mensajes', note: 'Bandeja del formulario.', children: <CmsApp embeddedPath="/admin/mensajes" className="min-h-[900px]" /> },
+    { id: 'cms-sobre-mi', title: 'CMS · Sobre mí', note: 'Presentación, historia, trayectoria, proceso y herramientas.', children: <CmsApp embeddedPath="/admin/sobre-mi" className="min-h-[900px]" /> },
     { id: 'cms-contenido', title: 'CMS · Contenido del sitio', note: 'Portada, formulario, contacto y redes.', children: <CmsApp embeddedPath="/admin/contenido" className="min-h-[900px]" /> },
   ];
 

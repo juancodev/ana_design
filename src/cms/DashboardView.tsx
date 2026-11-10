@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, ExternalLink, FolderOpen, Images, Inbox, Layers, PenLine, Plus } from 'lucide-react';
+import { ArrowRight, ExternalLink, FolderOpen, Images, Inbox, Layers, PenLine, Plus, UserRound } from 'lucide-react';
 import { useSite } from '../store/SiteStore';
 import { CmsLink, PageHeader, useCmsNav } from './CmsApp';
 import { Badge, Button, Card, EmptyState, formatDate } from './ui';
@@ -110,6 +110,7 @@ export const DashboardView: React.FC = () => {
           <Card title="Accesos rápidos">
             <div className="grid gap-2">
               <Button className="justify-start" icon={<PenLine className="w-4 h-4" />} onClick={() => go('/admin/contenido')}>Editar el lema y la portada</Button>
+              <Button className="justify-start" icon={<UserRound className="w-4 h-4" />} onClick={() => go('/admin/sobre-mi')}>Editar mi presentación</Button>
               <Button className="justify-start" icon={<Inbox className="w-4 h-4" />} onClick={() => go('/admin/mensajes')}>Revisar mensajes</Button>
             </div>
           </Card>
